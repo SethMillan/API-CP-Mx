@@ -1,6 +1,0 @@
-applicationType: default
-defaultPackage: com.millanseth
-testFramework: junit
-sourceLanguage: java
-buildTool: maven
-features: [app-name, data, data-jpa, http-client-test, java, java-application, jdbc-hikari, junit, logback, lombok, maven, maven-enforcer-plugin, micronaut-aot, micronaut-http-validation, mysql, netty-server, openapi, properties, readme, serialization-jackson, shade, test-resources]
