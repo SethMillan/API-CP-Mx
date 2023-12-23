@@ -15,17 +15,25 @@ public class EstadoImpl implements IEstado {
 
     @Transactional
     @Override
-    public EstadoDto save(EstadoDto estado) {
+    public Estado save(EstadoDto estadoDto) {
+        Estado estado =Estado.builder()
+                .idEdo(estadoDto.getIdEdo())
+                .Estado(estadoDto.getEstado())
+                .build();
         return estadoDAO.save(estado);
     }
+
+
     @Transactional(readOnly = true)
     @Override
-    public EstadoDto findById(Integer id) {
+    public Estado findById(Integer id) {
         return estadoDAO.findById(id).orElse(null);
     }
+
+
     @Transactional
     @Override
-    public void delete(EstadoDto estado) {
+    public void delete(Estado estado) {
         estadoDAO.delete(estado);
     }
 }

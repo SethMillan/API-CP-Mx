@@ -20,21 +20,26 @@ public class EstadoController {
 
     @PostMapping("estado")
     @ResponseStatus(HttpStatus.CREATED)
-    public Estado create (@RequestBody EstadoDto estado){
-        return estadoService.save(estado);
+    public EstadoDto create (@RequestBody EstadoDto estadoDto){
+        Estado estadoSave=estadoService.save(estadoDto);
+        return EstadoDto.builder().idEdo(estadoSave.getIdEdo()).Estado(estadoSave.getEstado()).build();
     }
+
+
     @PutMapping("estado")
     @ResponseStatus(HttpStatus.CREATED)
-    public Estado update (@RequestBody EstadoDto estado){
-        return estadoService.save(estado);
+    public EstadoDto update (@RequestBody EstadoDto estadoDto){
+        Estado estadoUpdate = estadoService.save(estadoDto);
+        return EstadoDto.builder().idEdo(estadoUpdate.getIdEdo()).Estado(estadoUpdate.getEstado()).build();
     }
+
 
     @DeleteMapping("estado/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> delete (@PathVariable Integer id){
         Map<String, Object> response = new HashMap<>();
         try {
-            EstadoDto estadoDelete=estadoService.findById(id);
+            Estado estadoDelete=estadoService.findById(id);
             estadoService.delete(estadoDelete);
             return new ResponseEntity<>(estadoDelete,HttpStatus.NO_CONTENT);
         }catch (DataAccessException exDt){
@@ -47,8 +52,9 @@ public class EstadoController {
 
     @GetMapping("estado/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EstadoDto showById(@PathVariable Integer id){
-        return estadoService.findById(id);
+    public EstadoDto showById(@PathVariable Integer id) {
+        Estado estado= estadoService.findById(id);
+        return EstadoDto.builder().idEdo(estado.getIdEdo()).Estado(estado.getEstado()).build();
     }
 
 }
