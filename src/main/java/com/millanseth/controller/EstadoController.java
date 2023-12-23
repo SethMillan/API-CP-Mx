@@ -69,9 +69,24 @@ public class EstadoController {
 
     @GetMapping("estado/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EstadoDto showById(@PathVariable Integer id) {
+    public ResponseEntity<?> showById(@PathVariable Integer id) {
         Estado estado= estadoService.findById(id);
-        return EstadoDto.builder().idEdo(estado.getIdEdo()).Estado(estado.getEstado()).build();
+        if (estado==null){
+            return new ResponseEntity<>(
+                    MensajeResponse.builder().mensaje("El registro que intenta buscar no existe").object(null).build(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);//en caso de no encontrarlo manda un objeto nulo y un mensaje de error
+        }else{
+            return new ResponseEntity<>(
+                    MensajeResponse.builder()
+                            .mensaje("")
+                            .object(
+                                    EstadoDto.builder()
+                                            .idEdo(estado.getIdEdo())
+                                            .Estado(estado.getEstado())
+                                            .build()
+                            ).build()
+                    ,HttpStatus.OK);
+        }
     }
 
 }
