@@ -22,14 +22,17 @@ public class EstadoController {
         Estado estadoSave=null;     //el requestbody es para que retorne un json o algo asi
         try{
             estadoSave=estadoService.save(estadoDto);
-            estadoDto=EstadoDto.builder().idEdo(estadoSave.getIdEdo()).Estado(estadoSave.getEstado()).build();
+            estadoDto=EstadoDto.builder()
+                    .idEdo(estadoSave.getIdEdo())
+                    .Estado(estadoSave.getEstado()).build();
             //mediante el builder del DTO guardamos toda la informacion, recoordando cerrarlo con el build()
-            return new ResponseEntity<>(MensajeResponse.builder().mensaje("Guardado correctamente").object(estadoDto).build(),HttpStatus.CREATED);
+            return new ResponseEntity<>(MensajeResponse.builder().error(false)
+                    .mensaje("Guardado correctamente").object(estadoDto).build(),HttpStatus.CREATED);
             //aqui retornamos el response entity con el mensajeresponse y el objeto que acabamos de buildear
         }catch (DataAccessException exDt){//aqui atrapamos el error en caso de haber
             return new ResponseEntity<>(
-                    MensajeResponse.builder().mensaje(exDt.getMessage()).object(null).build(),
-                    HttpStatus.INTERNAL_SERVER_ERROR);//el http response que mandamos sera uno de error
+                    MensajeResponse.builder().error(true).mensaje(exDt.getMessage()).object(null).build(),
+                    HttpStatus.METHOD_NOT_ALLOWED);//el http response que mandamos sera uno de error
         }
     }
 
@@ -42,12 +45,16 @@ public class EstadoController {
             estadoUpdate = estadoService.save(estadoDto);//el metodo save sirve para lo mismo en este caso
             estadoDto=EstadoDto.builder().idEdo(estadoUpdate.getIdEdo()).Estado(estadoUpdate.getEstado()).build();
             //buildeamos el dto
-            return new ResponseEntity<>(MensajeResponse.builder().mensaje("Actualizado correctamente").object(estadoDto).build(),HttpStatus.CREATED);
+            return new ResponseEntity<>(MensajeResponse.builder()
+                    .error(false)
+                    .mensaje("Actualizado correctamente")
+                    .object(estadoDto).build()
+                    ,HttpStatus.CREATED);
             //retornamos el response entity con un mensajeresponse y un mensaje de todo correcto y el objeto que buildeamos
         }catch (DataAccessException exDt){
             return new ResponseEntity<>(
-                    MensajeResponse.builder().mensaje(exDt.getMessage()).object(null).build(),
-                    HttpStatus.INTERNAL_SERVER_ERROR);//aqui mandamos la respuesta negativa y el error que se atrapo
+                    MensajeResponse.builder().error(true).mensaje(exDt.getMessage()).object(null).build(),
+                    HttpStatus.METHOD_NOT_ALLOWED);//aqui mandamos la respuesta negativa y el error que se atrapo
         }
     }
 
@@ -61,8 +68,8 @@ public class EstadoController {
             return new ResponseEntity<>(estadoDelete,HttpStatus.NO_CONTENT);
         }catch (DataAccessException exDt){
             return new ResponseEntity<>(
-                    MensajeResponse.builder().mensaje(exDt.getMessage()).object(null).build(),
-                    HttpStatus.INTERNAL_SERVER_ERROR);//en caso de no encontrarlo manda un objeto nulo y un mensaje de error
+                    MensajeResponse.builder().error(true).mensaje(exDt.getMessage()).object(null).build(),
+                    HttpStatus.METHOD_NOT_ALLOWED);//en caso de no encontrarlo manda un objeto nulo y un mensaje de error
         }
     }
 
@@ -73,12 +80,13 @@ public class EstadoController {
         Estado estado= estadoService.findById(id);
         if (estado==null){
             return new ResponseEntity<>(
-                    MensajeResponse.builder().mensaje("El registro que intenta buscar no existe").object(null).build(),
-                    HttpStatus.INTERNAL_SERVER_ERROR);//en caso de no encontrarlo manda un objeto nulo y un mensaje de error
+                    MensajeResponse.builder().error(true).mensaje("El registro que intenta buscar no existe").object(null).build(),
+                    HttpStatus.NOT_FOUND);//en caso de no encontrarlo manda un objeto nulo y un mensaje de error
         }else{
             return new ResponseEntity<>(
                     MensajeResponse.builder()
-                            .mensaje("")
+                            .error(false)
+                            .mensaje("Encontrado")
                             .object(
                                     EstadoDto.builder()
                                             .idEdo(estado.getIdEdo())
