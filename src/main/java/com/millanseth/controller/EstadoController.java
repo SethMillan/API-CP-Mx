@@ -1,9 +1,12 @@
 package com.millanseth.controller;
 
 import com.millanseth.model.dto.EstadoDto;
+import com.millanseth.model.dto.MunicipioDto;
 import com.millanseth.model.entity.Estado;
+import com.millanseth.model.entity.Municipio;
 import com.millanseth.payload.MensajeResponse;
 import com.millanseth.service.IEstado;
+import com.millanseth.service.IMunicipio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -19,7 +22,8 @@ import java.util.Map;
 public class EstadoController {
     @Autowired//inyeccion de dependencias
     private IEstado estadoService;
-
+    @Autowired
+    private IMunicipio municipioService;
 
     @GetMapping("estados")
     @ResponseStatus(HttpStatus.OK)
@@ -39,6 +43,26 @@ public class EstadoController {
                             .mensaje("Estados encontrados")
                             .object(listaEstados)
                             .build()
+                    ,HttpStatus.OK);
+        }
+    }
+    @GetMapping("municipios/estado/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> mostrarMcpios(@PathVariable Integer id){
+        Estado estado= estadoService.findById(id);
+        //Municipio municipio=municipioService.findById()
+        if (estado==null){
+            return new ResponseEntity<>(
+                    MensajeResponse.builder().error(true).mensaje("El registro que intenta buscar no existe").object(null).build(),
+                    HttpStatus.NOT_FOUND);//en caso de no encontrarlo manda un objeto nulo y un mensaje de error
+        }else{
+            return new ResponseEntity<>(
+                    MensajeResponse.builder()
+                            .error(false)
+                            .mensaje("Encontrado")
+                            .object(
+                                MunicipioDto.builder().idMcpio(get)
+                            ).build()
                     ,HttpStatus.OK);
         }
     }

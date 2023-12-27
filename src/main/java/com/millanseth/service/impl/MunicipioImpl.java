@@ -6,6 +6,7 @@ import com.millanseth.service.IMunicipio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 @Service
 public class MunicipioImpl implements IMunicipio {
@@ -19,5 +20,12 @@ public class MunicipioImpl implements IMunicipio {
     @Override
     public Municipio findById(Integer id) {
         return municipioDAO.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Municipio> listAllById(Integer id) {
+        List<Municipio> nuevalista;
+
+        return null;
     }
 }
