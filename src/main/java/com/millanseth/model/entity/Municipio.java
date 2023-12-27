@@ -3,6 +3,8 @@ package com.millanseth.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,7 +12,7 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "tablamcpio")
-public class Municipio {
+public class Municipio implements Serializable {
     @Id
     @Column(name="id_Mcpio")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
