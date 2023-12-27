@@ -10,12 +10,38 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1")//Esta es la direccion a donde nos vamos a conectar, indicamos que es una api y que es la version 1
 public class EstadoController {
     @Autowired//inyeccion de dependencias
     private IEstado estadoService;
 
+
+    @GetMapping("estados")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> showAll() {
+        List<Estado> listaEstados= estadoService.listAll();
+        if (listaEstados==null){
+            return new ResponseEntity<>(
+                    MensajeResponse.builder()
+                            .error(true)
+                            .mensaje("No hay estados registrados")
+                            .object(null).build(),
+                    HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(
+                    MensajeResponse.builder()
+                            .error(false)
+                            .mensaje("Estados encontrados")
+                            .object(listaEstados)
+                            .build()
+                    ,HttpStatus.OK);
+        }
+    }
     @PostMapping("estado")//para el metodo post solo "estado"
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> create (@RequestBody EstadoDto estadoDto){//retorna un response entity para el manejo de httpstatus y los mensajes en caso de errores

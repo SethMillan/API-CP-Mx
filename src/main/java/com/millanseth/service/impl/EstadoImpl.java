@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class EstadoImpl implements IEstado {
     @Autowired
@@ -35,5 +37,10 @@ public class EstadoImpl implements IEstado {
     @Override
     public void delete(Estado estado) {
         estadoDAO.delete(estado);
+    }
+
+    @Override
+    public List<Estado> listAll() {
+        return (List)estadoDAO.findAll();
     }
 }
