@@ -10,8 +10,7 @@ import java.io.Serializable;
 @ToString
 @Builder
 public class MunicipioDto implements Serializable {
-
+    private Integer idEdo;
     private Integer idMcpio;
     private String Municipio;
-    private Integer idEdo;
 }

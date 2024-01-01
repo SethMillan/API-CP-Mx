@@ -53,19 +53,27 @@ public class EstadoController {
     public ResponseEntity<?> mostrarMcpios(@PathVariable Integer id){
             try {
                 List<Municipio> listMunicipios=municipioService.listAllById(id);
+                List<MunicipioDto> municipiosDTO = listMunicipios.stream()
+                        .map(municipio -> MunicipioDto.builder()
+                                .idEdo(municipio.getEstado().getIdEdo())
+                                .idMcpio(municipio.getId())
+                                .Municipio(municipio.getMunicipio())
+                                .build())
+                        .collect(Collectors.toList());
                 if (listMunicipios==null){
                     return new ResponseEntity<>(
                             MensajeResponse.builder()
                                     .error(true)
-                                    .mensaje("No hay estados registrados")
+                                    .mensaje("No hay municipios registrados")
                                     .object(null).build(),
                             HttpStatus.OK);
                 }else{
+                    int tamaño= municipiosDTO.size();
                     return new ResponseEntity<>(
                             MensajeResponse.builder()
                                     .error(false)
-                                    .mensaje("Estados encontrados")
-                                    .object(listMunicipios)
+                                    .mensaje("Municipios encontrados : "+tamaño)
+                                    .object(municipiosDTO)
                                     .build()
                             ,HttpStatus.OK);
                 }
