@@ -42,8 +42,29 @@ public class EstadoController {
             return new ResponseEntity<>(
                     MensajeResponse.builder()
                             .error(false)
-                            .mensaje("Estados encontrados")
+                            .mensaje("Estados encontrados :"+listaEstados.size())
                             .object(listaEstados)
+                            .build()
+                    ,HttpStatus.OK);
+        }
+    }
+    @GetMapping("municipios")
+@ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> showAllMunicipios(){
+        List<Municipio> listaMunicipios= municipioService.listAll();
+        if (listaMunicipios==null){
+            return new ResponseEntity<>(
+                    MensajeResponse.builder()
+                            .error(true)
+                            .mensaje("No hay estados registrados")
+                            .object(null).build(),
+                    HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(
+                    MensajeResponse.builder()
+                            .error(false)
+                            .mensaje("Estados encontrados : "+listaMunicipios.size())
+                            .object(listaMunicipios)
                             .build()
                     ,HttpStatus.OK);
         }
