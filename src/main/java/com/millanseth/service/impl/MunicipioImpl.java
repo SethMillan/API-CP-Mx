@@ -24,8 +24,6 @@ public class MunicipioImpl implements IMunicipio {
 
     @Override
     public List<Municipio> listAllById(Integer id) {
-        List<Municipio> nuevalista;
-
-        return null;
+        return municipioDAO.findEstadoById(id);
     }
 }

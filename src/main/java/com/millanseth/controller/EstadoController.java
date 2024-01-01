@@ -1,5 +1,6 @@
 package com.millanseth.controller;
 
+import com.millanseth.model.dao.MunicipioDAO;
 import com.millanseth.model.dto.EstadoDto;
 import com.millanseth.model.dto.MunicipioDto;
 import com.millanseth.model.entity.Estado;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")//Esta es la direccion a donde nos vamos a conectar, indicamos que es una api y que es la version 1
@@ -49,21 +51,29 @@ public class EstadoController {
     @GetMapping("municipios/estado/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> mostrarMcpios(@PathVariable Integer id){
-        Estado estado= estadoService.findById(id);
-        //Municipio municipio=municipioService.findById()
-        if (estado==null){
-            return new ResponseEntity<>(
-                    MensajeResponse.builder().error(true).mensaje("El registro que intenta buscar no existe").object(null).build(),
-                    HttpStatus.NOT_FOUND);//en caso de no encontrarlo manda un objeto nulo y un mensaje de error
-        }else{
-            return new ResponseEntity<>(
-                    MensajeResponse.builder()
-                            .error(false)
-                            .mensaje("Encontrado")
-                            .object(
-                                MunicipioDto.builder().idMcpio(get)
-                            ).build()
-                    ,HttpStatus.OK);
+            try {
+                List<Municipio> listMunicipios=municipioService.listAllById(id);
+                if (listMunicipios==null){
+                    return new ResponseEntity<>(
+                            MensajeResponse.builder()
+                                    .error(true)
+                                    .mensaje("No hay estados registrados")
+                                    .object(null).build(),
+                            HttpStatus.OK);
+                }else{
+                    return new ResponseEntity<>(
+                            MensajeResponse.builder()
+                                    .error(false)
+                                    .mensaje("Estados encontrados")
+                                    .object(listMunicipios)
+                                    .build()
+                            ,HttpStatus.OK);
+                }
+            }catch (Exception exDt){
+                return new ResponseEntity<>(
+                        MensajeResponse.builder().error(true).mensaje(exDt.getMessage()).object(null).build(),
+                        HttpStatus.METHOD_NOT_ALLOWED);//el http response que mandamos sera uno de error
+           // }
         }
     }
     @PostMapping("estado")//para el metodo post solo "estado"
