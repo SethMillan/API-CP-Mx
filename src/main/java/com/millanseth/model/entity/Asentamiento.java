@@ -15,7 +15,7 @@ public class Asentamiento {
     @Id
     @Column(name="Asenta")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String Asenta;
+    private String asenta;
     @ManyToOne
     @JoinColumn(name="CP")
     private CodigoPostal codigoPostal;
