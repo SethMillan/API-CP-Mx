@@ -39,6 +39,7 @@ public class EstadoImpl implements IEstado {
         estadoDAO.delete(estado);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Estado> listAll() {
         return (List)estadoDAO.findAll();
