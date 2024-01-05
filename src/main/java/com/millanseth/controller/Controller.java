@@ -1,6 +1,5 @@
 package com.millanseth.controller;
 
-import com.millanseth.model.dao.MunicipioDAO;
 import com.millanseth.model.dto.EstadoDto;
 import com.millanseth.model.dto.MunicipioDto;
 import com.millanseth.model.entity.Estado;
@@ -14,14 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")//Esta es la direccion a donde nos vamos a conectar, indicamos que es una api y que es la version 1
-public class EstadoController {
+public class Controller {
     @Autowired//inyeccion de dependencias
     private IEstado estadoService;
     @Autowired
