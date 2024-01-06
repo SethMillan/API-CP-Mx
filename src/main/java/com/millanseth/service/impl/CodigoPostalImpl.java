@@ -26,7 +26,7 @@ public class CodigoPostalImpl implements ICodigoPostal {
     }
     @Transactional(readOnly = true)
     @Override
-    public List<CodigoPostal> listAllById(Integer id) {
-        return codigoPostalDAO.findMunicipioById(id);
+    public List<CodigoPostal> listAllById(Integer id_Mcpio, Integer id_Edo) {
+        return codigoPostalDAO.findMunicipioById(id_Mcpio,id_Edo);
     }
 }

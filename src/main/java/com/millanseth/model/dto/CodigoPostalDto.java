@@ -12,9 +12,10 @@ import java.io.Serializable;
 @Builder
 public class CodigoPostalDto implements Serializable {
     private Integer idEdo;
-    private Integer idMunicipio;
+    private Integer idMcpio;
     private String estado;
     private String municipio;
+    private Integer codigoPostal;
     private Asentamiento asentamiento;
 
 
