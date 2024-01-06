@@ -16,7 +16,6 @@ public class CodigoPostalDto implements Serializable {
     private String estado;
     private String municipio;
     private Integer codigoPostal;
-    private Asentamiento asentamiento;
 
 
 

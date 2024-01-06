@@ -17,8 +17,7 @@ public class AsentamientoImpl implements IAsentamiento {
     }
 
     @Override
-    public Asentamiento findById(String id) {
-        //nota aqui ubicamos a los asentamientos por nombre entonces va a ser un poco mas complejo
+    public Asentamiento findById(Integer id) {
         return asentamientoDAO.findById(id).orElse(null);
     }
 

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface AsentamientoDAO extends CrudRepository <Asentamiento,String>{
+public interface AsentamientoDAO extends CrudRepository <Asentamiento,Integer>{
     @Query("SELECT m FROM Asentamiento m JOIN FETCH m.codigoPostal WHERE m.codigoPostal.cp = :cpid")
     List<Asentamiento> findCPById(@Param("cpid")Integer cp);
 

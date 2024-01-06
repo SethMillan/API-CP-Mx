@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface IAsentamiento {
     List<Asentamiento> listAll();
-    Asentamiento findById(String id);
+    Asentamiento findById(Integer id);
     List<Asentamiento> listAllById(Integer id);
 }

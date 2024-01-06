@@ -16,6 +16,7 @@ public class Asentamiento {
     @Column(name="Asenta")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String asenta;
+
     @ManyToOne
     @JoinColumn(name="CP")
     private CodigoPostal codigoPostal;

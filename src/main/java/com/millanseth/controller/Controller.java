@@ -1,5 +1,6 @@
 package com.millanseth.controller;
 
+import com.millanseth.model.dao.CodigoPostalDAO;
 import com.millanseth.model.dto.CodigoPostalDto;
 import com.millanseth.model.dto.EstadoDto;
 import com.millanseth.model.dto.MunicipioDto;
@@ -112,28 +113,40 @@ public class Controller {
         }
     }
 
-    @GetMapping("estado/{idEstado}/municipio/{idMcpio}/codigos")
+    @GetMapping("codigospostales/estado/{idEstado}/municipio/{idMcpio}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?>showFilterCP(@PathVariable Integer idEstado, @PathVariable Integer idMcpio){
-//try {
-    List<CodigoPostal> listaCodigos = codigoService.listAllById(idMcpio,idEstado);
-    List<CodigoPostalDto> codigoDto;
-       codigoDto = listaCodigos.stream()
+        List<CodigoPostal> listaCodigos = codigoService.listAllById(idMcpio,idEstado);
+        List<CodigoPostalDto> codigoDto;
+        codigoDto = listaCodigos.stream()
                 .map(codigopostal -> CodigoPostalDto.builder()
                         .idEdo(codigopostal.getMunicipio().getEstado().getIdEdo())
                         .idMcpio(codigopostal.getMunicipio().getId())
                         .estado(codigopostal.getMunicipio().getEstado().getEstado())
                         .municipio(codigopostal.getMunicipio().getMunicipio())
                         .codigoPostal(codigopostal.getCp())
-                        //.asentamiento(asentamientoService.findById(codigopostal.getCp()))
                         .build())
                 .collect(Collectors.toList());
 
-
-    return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Municipio No Encontrado en relacion al Estado").object(codigoDto).build(), HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Numero de CP encontrados : "+codigoDto.size()).object(codigoDto).build(), HttpStatus.NOT_FOUND);
 
     }
 
+    //Esto deberia ser de asentamientos entonces el codigoService deberia ser un asentamientoService
+    /*
+    @GetMapping("asentamiento/asentamientos/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> showCP(@PathVariable Integer id){
+        List<CodigoPostal> codigo=codigoService.listAllById(id);//aqui obviamente hay un error por lo  ya mencionado
+        List<CodigoPostalDto> codigoDto = codigo.stream().map(codigoPostal -> CodigoPostalDto
+                .builder()
+                .idEdo(codigoPostal.getMunicipio().getEstado().getIdEdo())
+                .idMcpio(codigoPostal.getMunicipio().getId())
+                .municipio(codigoPostal.getMunicipio().getMunicipio())
+                .codigoPostal(codigoPostal.getCp())
+                .build()).toList();
+        return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("").object(codigoDto).build(),HttpStatus.OK);
+    }*/
 
     @PostMapping("estado")//para el metodo post solo "estado"
     @ResponseStatus(HttpStatus.CREATED)
