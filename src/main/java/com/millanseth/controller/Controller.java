@@ -12,6 +12,7 @@ import com.millanseth.service.IAsentamiento;
 import com.millanseth.service.ICodigoPostal;
 import com.millanseth.service.IEstado;
 import com.millanseth.service.IMunicipio;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -111,6 +112,31 @@ public class Controller {
                 MensajeResponse.builder().error(true).mensaje(exDt.getMessage()).object(null).build(),
                 HttpStatus.METHOD_NOT_ALLOWED);//el http response que mandamos sera uno de error
         }
+    }
+
+    @GetMapping("codigospostales")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> showAllCp(){
+        try {
+            List<CodigoPostal> listaCP = codigoService.listAll();
+            List<CodigoPostalDto> listaDto = listaCP.stream()
+                    .map(codigoPostal -> CodigoPostalDto.builder()
+                            .idEdo(codigoPostal.getMunicipio().getEstado().getIdEdo())
+                            .estado(codigoPostal.getMunicipio().getEstado().getEstado())
+                            .idMcpio(codigoPostal.getMunicipio().getId())
+                            .municipio(codigoPostal.getMunicipio().getMunicipio())
+                            .codigoPostal(codigoPostal.getCp())
+                            .build()
+                    ).toList();
+            return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Codigos totales ").object(listaCP).build(),HttpStatus.OK);
+        }catch (Exception ext ){
+            return new ResponseEntity<>(MensajeResponse.builder().error(true).mensaje("Error encontrado "+ext).object(null).build(),HttpStatus.OK);
+        }
+    }
+    @GetMapping("asentamientos")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> showAllAsenta(){
+        return null;
     }
 
     @GetMapping("codigospostales/estado/{idEstado}/municipio/{idMcpio}")
