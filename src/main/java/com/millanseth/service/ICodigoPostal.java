@@ -1,7 +1,5 @@
 package com.millanseth.service;
 
-
-
 import com.millanseth.model.entity.CodigoPostal;
 
 import java.util.List;

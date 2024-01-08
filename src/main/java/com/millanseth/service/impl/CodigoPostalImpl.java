@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-@Service
 
+@Service
 public class CodigoPostalImpl implements ICodigoPostal {
     @Autowired
     private CodigoPostalDAO codigoPostalDAO;
@@ -17,7 +17,7 @@ public class CodigoPostalImpl implements ICodigoPostal {
     @Transactional(readOnly = true)
     @Override
     public List<CodigoPostal> listAll() {
-        return (List)codigoPostalDAO.findAll();
+        return (List<CodigoPostal>) codigoPostalDAO.findAll();
     }
     @Transactional(readOnly = true)
     @Override
@@ -27,6 +27,6 @@ public class CodigoPostalImpl implements ICodigoPostal {
     @Transactional(readOnly = true)
     @Override
     public List<CodigoPostal> listAllById(Integer id_Mcpio, Integer id_Edo) {
-        return codigoPostalDAO.findCodigoPostalByMunicipioAndEstado(id_Edo);
+        return codigoPostalDAO.findCodigoPostalByMunicipioAndEstado(id_Mcpio,id_Edo);
     }
 }

@@ -14,7 +14,6 @@ import lombok.*;
 public class CodigoPostal {
     @Id
     @Column(name="CP")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cp;
     @ManyToOne
     @JoinColumn(name="id_Mcpio")

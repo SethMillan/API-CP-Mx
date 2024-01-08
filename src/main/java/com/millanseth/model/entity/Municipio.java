@@ -14,8 +14,7 @@ import java.io.Serializable;
 @Table(name = "tablamcpio")
 public class Municipio implements Serializable {
     @Id
-    @Column(name="id_Mcpio")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Integer id;
     @Column(name="mcpio")
     private String Municipio;

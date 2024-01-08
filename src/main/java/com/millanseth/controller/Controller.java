@@ -128,7 +128,7 @@ public class Controller {
                             .codigoPostal(codigoPostal.getCp())
                             .build()
                     ).toList();
-            return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Codigos totales ").object(listaCP).build(),HttpStatus.OK);
+            return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Codigos totales "+listaDto.size()).object(listaDto).build(),HttpStatus.OK);
         }catch (Exception ext ){
             return new ResponseEntity<>(MensajeResponse.builder().error(true).mensaje("Error encontrado "+ext).object(null).build(),HttpStatus.OK);
         }
@@ -139,7 +139,7 @@ public class Controller {
         return null;
     }
 
-    @GetMapping("codigospostales/estado/{idEstado}/municipio/{idMcpio}")
+    @GetMapping("estado/{idEstado}/municipio/{idMcpio}/codigospostales")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?>showFilterCP(@PathVariable Integer idEstado, @PathVariable Integer idMcpio){
         List<CodigoPostal> listaCodigos = codigoService.listAllById(idMcpio,idEstado);
@@ -154,13 +154,13 @@ public class Controller {
                         .build())
                 .collect(Collectors.toList());
 
-    return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Numero de CP encontrados : "+codigoDto.size()).object(codigoDto).build(), HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Numero de CP encontrados : "+ listaCodigos.size()).object(listaCodigos).build(), HttpStatus.NOT_FOUND);
 
     }
 
     //Esto deberia ser de asentamientos entonces el codigoService deberia ser un asentamientoService
     /*
-    @GetMapping("asentamiento/asentamientos/{id}")
+    @GetMapping("asentamientos/codigopostal/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> showCP(@PathVariable Integer id){
         List<CodigoPostal> codigo=codigoService.listAllById(id);//aqui obviamente hay un error por lo  ya mencionado
