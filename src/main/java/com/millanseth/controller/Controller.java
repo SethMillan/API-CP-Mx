@@ -1,9 +1,11 @@
 package com.millanseth.controller;
 
 import com.millanseth.model.dao.CodigoPostalDAO;
+import com.millanseth.model.dto.AsentamientoDto;
 import com.millanseth.model.dto.CodigoPostalDto;
 import com.millanseth.model.dto.EstadoDto;
 import com.millanseth.model.dto.MunicipioDto;
+import com.millanseth.model.entity.Asentamiento;
 import com.millanseth.model.entity.CodigoPostal;
 import com.millanseth.model.entity.Estado;
 import com.millanseth.model.entity.Municipio;
@@ -33,6 +35,7 @@ public class Controller {
     private ICodigoPostal codigoService;
     @Autowired
     private IAsentamiento asentamientoService;
+    //PARA MOSTRAR TODA LA INFORMACION DE NUESTRAS TABLAS SIN FILTROS....
     @GetMapping("estados")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> showAll() {
@@ -75,45 +78,6 @@ public class Controller {
                     ,HttpStatus.OK);
         }
     }
-    @GetMapping("municipios/estado/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> mostrarMcpios(@PathVariable Integer id){
-           try{
-                    List<Municipio> listMunicipios = municipioService.listAllById(id);
-                    List<MunicipioDto>municipiosDTO = listMunicipios.stream()
-                            .map(municipio -> MunicipioDto.builder()
-                                    .idEdo(municipio.getEstado().getIdEdo())
-                                    .idMcpio(municipio.getId())
-                                    .Municipio(municipio.getMunicipio())
-                                    .build())
-                            .collect(Collectors.toList());
-
-                if (listMunicipios==null){
-                    return new ResponseEntity<>(
-                            MensajeResponse.builder()
-                                    .error(true)
-                                    .mensaje("No hay municipios registrados")
-                                    .object(null).build(),
-                            HttpStatus.OK);
-                }else{
-                    int tamaño= municipiosDTO.size();
-                    return new ResponseEntity<>(
-                            MensajeResponse.builder()
-                                    .error(false)
-                                    .mensaje("Municipios encontrados : "+tamaño)
-                                    .object(listMunicipios)
-                                    .build()
-                            ,HttpStatus.OK);
-                }
-            }catch (Exception exDt)
-
-        {
-        return new ResponseEntity<>(
-                MensajeResponse.builder().error(true).mensaje(exDt.getMessage()).object(null).build(),
-                HttpStatus.METHOD_NOT_ALLOWED);//el http response que mandamos sera uno de error
-        }
-    }
-
     @GetMapping("codigospostales")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> showAllCp(){
@@ -139,41 +103,122 @@ public class Controller {
         return null;
     }
 
-    @GetMapping("estado/{idEstado}/municipio/{idMcpio}/codigospostales")
+
+    //PARA MOSTRAR LA INFORMACION DE NUESTRAS TABLAS FILTRANDO LA INFORMACION
+
+    @GetMapping("estado/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?>showFilterCP(@PathVariable Integer idEstado, @PathVariable Integer idMcpio){
-        List<CodigoPostal> listaCodigos = codigoService.listAllById(idMcpio,idEstado);
-        List<CodigoPostalDto> codigoDto;
-        codigoDto = listaCodigos.stream()
-                .map(codigopostal -> CodigoPostalDto.builder()
-                        .idEdo(codigopostal.getMunicipio().getEstado().getIdEdo())
-                        .idMcpio(codigopostal.getMunicipio().getId())
-                        .estado(codigopostal.getMunicipio().getEstado().getEstado())
-                        .municipio(codigopostal.getMunicipio().getMunicipio())
-                        .codigoPostal(codigopostal.getCp())
-                        .build())
-                .collect(Collectors.toList());
-
-    return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Numero de CP encontrados : "+ listaCodigos.size()).object(listaCodigos).build(), HttpStatus.NOT_FOUND);
-
+    public ResponseEntity<?> showById(@PathVariable Integer id) {
+        Estado estado= estadoService.findById(id);
+        if (estado==null){
+            return new ResponseEntity<>(
+                    MensajeResponse.builder().error(true).mensaje("El registro que intenta buscar no existe").object(null).build(),
+                    HttpStatus.NOT_FOUND);//en caso de no encontrarlo manda un objeto nulo y un mensaje de error
+        }else{
+            return new ResponseEntity<>(
+                    MensajeResponse.builder()
+                            .error(false)
+                            .mensaje("Encontrado")
+                            .object(
+                                    EstadoDto.builder()
+                                            .idEdo(estado.getIdEdo())
+                                            .Estado(estado.getEstado())
+                                            .build()
+                            ).build()
+                    ,HttpStatus.OK);
+        }
     }
 
-    //Esto deberia ser de asentamientos entonces el codigoService deberia ser un asentamientoService
-    /*
+    @GetMapping("municipios/estado/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> mostrarMcpios(@PathVariable Integer id){
+           try{
+               List<Municipio> listMunicipios = municipioService.listAllById(id);
+                if (listMunicipios==null){
+                    return new ResponseEntity<>(
+                            MensajeResponse.builder()
+                                    .error(true)
+                                    .mensaje("No hay municipios registrados")
+                                    .object(null).build(),
+                            HttpStatus.OK);
+                }else{
+                    List<MunicipioDto>municipiosDTO = listMunicipios.stream()
+                            .map(municipio -> MunicipioDto.builder()
+                                    .idEdo(municipio.getEstado().getIdEdo())
+                                    .idMcpio(municipio.getId())
+                                    .Municipio(municipio.getMunicipio())
+                                    .build())
+                            .collect(Collectors.toList());
+                    int tamaño= municipiosDTO.size();
+                    return new ResponseEntity<>(
+                            MensajeResponse.builder()
+                                    .error(false)
+                                    .mensaje("Municipios encontrados : "+tamaño)
+                                    .object(listMunicipios)
+                                    .build()
+                            ,HttpStatus.OK);
+                }
+            }catch (Exception exDt){
+        return new ResponseEntity<>(
+                MensajeResponse.builder().error(true).mensaje(exDt.getMessage()).object(null).build(),
+                HttpStatus.METHOD_NOT_ALLOWED);//el http response que mandamos sera uno de error
+        }
+    }
+    @GetMapping("codigospostales/municipio/{idMcpio}/estado/{idEstado}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?>showFilterCP(@PathVariable Integer idEstado, @PathVariable Integer idMcpio){
+        try {
+            List<CodigoPostal> listaCodigos = codigoService.listAllById(idMcpio, idEstado);
+            if(listaCodigos!=null) {
+                List<CodigoPostalDto> codigoDto;
+                codigoDto = listaCodigos.stream()
+                        .map(codigopostal -> CodigoPostalDto.builder()
+                                .idEdo(codigopostal.getMunicipio().getEstado().getIdEdo())
+                                .idMcpio(codigopostal.getMunicipio().getId())
+                                .estado(codigopostal.getMunicipio().getEstado().getEstado())
+                                .municipio(codigopostal.getMunicipio().getMunicipio())
+                                .codigoPostal(codigopostal.getCp())
+                                .build())
+                        .collect(Collectors.toList());
+                return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Numero de CP encontrados : " + codigoDto.size()).object(codigoDto).build(), HttpStatus.NOT_FOUND);
+            }else{
+                return new ResponseEntity<>(MensajeResponse.builder().error(true).mensaje("No se encontraron codigos postales en ese municipio").object(null).build(),HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception exDt){
+            return new ResponseEntity<>(
+                    MensajeResponse.builder().error(true).mensaje(exDt.getMessage()).object(null).build(),
+                    HttpStatus.METHOD_NOT_ALLOWED);//el http response que mandamos sera uno de error
+        }
+    }
+
+
     @GetMapping("asentamientos/codigopostal/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> showCP(@PathVariable Integer id){
-        List<CodigoPostal> codigo=codigoService.listAllById(id);//aqui obviamente hay un error por lo  ya mencionado
-        List<CodigoPostalDto> codigoDto = codigo.stream().map(codigoPostal -> CodigoPostalDto
-                .builder()
-                .idEdo(codigoPostal.getMunicipio().getEstado().getIdEdo())
-                .idMcpio(codigoPostal.getMunicipio().getId())
-                .municipio(codigoPostal.getMunicipio().getMunicipio())
-                .codigoPostal(codigoPostal.getCp())
-                .build()).toList();
-        return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("").object(codigoDto).build(),HttpStatus.OK);
-    }*/
+    public ResponseEntity<?> showFilterAsenta(@PathVariable Integer id){
+        try {
+            List<Asentamiento> asenta = asentamientoService.listAllById(id);//aqui obviamente hay un error por lo  ya mencionado
+            if(asenta!=null) {
+                List<AsentamientoDto> asentaDto = asenta.stream().map(asentamiento -> AsentamientoDto
+                        .builder()
+                        .estado(asentamiento.getCodigoPostal().getMunicipio().getEstado().getEstado())
+                        .municipio(asentamiento.getCodigoPostal().getMunicipio().getMunicipio())
+                        .codigoPostal(asentamiento.getCodigoPostal().getCp())
+                        .asentamiento(asentamiento.getAsenta())
+                        .build()).toList();
+                return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Asentamientos encontrados: "+asentaDto.size()).object(asentaDto).build(), HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("No se encontraron asentamientos").object(null).build(),HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception exDt){
+            return new ResponseEntity<>(
+                    MensajeResponse.builder().error(true).mensaje(exDt.getMessage()).object(null).build(),
+                    HttpStatus.METHOD_NOT_ALLOWED);
+        }
+    }
 
+
+
+    //METODOS XTRA QUE NO PIDIERON JIJI
     @PostMapping("estado")//para el metodo post solo "estado"
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> create (@RequestBody EstadoDto estadoDto){//retorna un response entity para el manejo de httpstatus y los mensajes en caso de errores
@@ -231,28 +276,5 @@ public class Controller {
         }
     }
 
-
-    @GetMapping("estado/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> showById(@PathVariable Integer id) {
-        Estado estado= estadoService.findById(id);
-        if (estado==null){
-            return new ResponseEntity<>(
-                    MensajeResponse.builder().error(true).mensaje("El registro que intenta buscar no existe").object(null).build(),
-                    HttpStatus.NOT_FOUND);//en caso de no encontrarlo manda un objeto nulo y un mensaje de error
-        }else{
-            return new ResponseEntity<>(
-                    MensajeResponse.builder()
-                            .error(false)
-                            .mensaje("Encontrado")
-                            .object(
-                                    EstadoDto.builder()
-                                            .idEdo(estado.getIdEdo())
-                                            .Estado(estado.getEstado())
-                                            .build()
-                            ).build()
-                    ,HttpStatus.OK);
-        }
-    }
 
 }

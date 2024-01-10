@@ -10,7 +10,8 @@ import java.io.Serializable;
 @ToString
 @Builder
 public class AsentamientoDto implements Serializable {
-    private String asenta;
+    private String asentamiento;
     private Integer codigoPostal;
-    private Integer municipioID;
+    private String municipio;
+    private String estado;
 }
