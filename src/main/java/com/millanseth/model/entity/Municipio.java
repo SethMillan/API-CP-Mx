@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Table(name = "tablamcpio")
 public class Municipio implements Serializable {
     @Id
-    @Column(name="id")
+    @Column(name="id_mcpio")
     private Integer id;
     @Column(name="mcpio")
     private String Municipio;
