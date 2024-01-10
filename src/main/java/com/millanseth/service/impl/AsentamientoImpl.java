@@ -25,4 +25,9 @@ public class AsentamientoImpl implements IAsentamiento {
     public List<Asentamiento> listAllById(Integer id) {
         return asentamientoDAO.findCPById(id);
     }
+
+    @Override
+    public List<Asentamiento> findCPByMcpioAndEdo(Integer idMcpio, Integer idEdo) {
+        return asentamientoDAO.findCPByMcpioAndEdo(idMcpio,idEdo);
+    }
 }
