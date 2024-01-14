@@ -136,7 +136,119 @@ La url para todos los endpoints es la siguiente `http://localhost:8080`
 
 #### Obtener todos los CPs
 
+- **Endpoint**: `/api/v1/codigospostales`
+- **Descripcion**: Obtiene mediante GET los municipios en la BD
+- **Respuesta**:
+  *(Respuesta reducida por exceso de datos)*
+```json
+{
+    "error": false,
+    "mensaje": "Codigos totales 31984",
+    "object": [
+        {
+            "idEdo": 1,
+            "idMcpio": 1,
+            "estado": "Aguascalientes",
+            "municipio": "Aguascalientes",
+            "codigoPostal": 20000
+        },
+        {
+            "idEdo": 1,
+            "idMcpio": 1,
+            "estado": "Aguascalientes",
+            "municipio": "Aguascalientes",
+            "codigoPostal": 20010
+        },
+        {
+            "idEdo": 1,
+            "idMcpio": 1,
+            "estado": "Aguascalientes",
+            "municipio": "Aguascalientes",
+            "codigoPostal": 20016
+        },
+        {
+            "idEdo": 1,
+            "idMcpio": 1,
+            "estado": "Aguascalientes",
+            "municipio": "Aguascalientes",
+            "codigoPostal": 20018
+        },
+        {
+            "idEdo": 1,
+            "idMcpio": 1,
+            "estado": "Aguascalientes",
+            "municipio": "Aguascalientes",
+            "codigoPostal": 20020
+        },
+        {
+            "idEdo": 1,
+            "idMcpio": 1,
+            "estado": "Aguascalientes",
+            "municipio": "Aguascalientes",
+            "codigoPostal": 20029
+        }
+    ]
+}
+```
+#### Obtener los CPs mediante Estado y Municipio
+
+- **Endpoint**: `/api/v1/codigospostales/municipio/{idMcpio}/estado/{idEstado}`
+- **Descripcion**: Obtiene mediante GET los municipios en la BD filtrando por estado
+- **Ejemplo**: `/api/v1/codigospostales/municipio/796/estado/16`
+- **Respuesta**:
+  *(Respuesta reducida por exceso de datos)*
+````json
+{
+  "error": false,
+  "mensaje": "Numero de CP encontrados : 147",
+  "object": [
+    {
+      "idEdo": 16,
+      "idMcpio": 796,
+      "estado": "Michoacan_de_Ocampo",
+      "municipio": "Morelia",
+      "codigoPostal": 58000
+    },
+    {
+      "idEdo": 16,
+      "idMcpio": 796,
+      "estado": "Michoacan_de_Ocampo",
+      "municipio": "Morelia",
+      "codigoPostal": 58004
+    },
+    {
+      "idEdo": 16,
+      "idMcpio": 796,
+      "estado": "Michoacan_de_Ocampo",
+      "municipio": "Morelia",
+      "codigoPostal": 58006
+    }
+  ]
+}
+````
+
 ### 4. Asentamiento
 
-#### Obtener todos los asentamientos 
+### Obtener todos los asentamientos
 
+- **Endpoint**: `/api/v1/asentamientos`
+- **Descripcion**: Obtiene mediante GET los municipios en la BD filtrando por estado
+- **Respuesta**:
+  *(Respuesta reducida por exceso de datos)*
+
+
+### Obtener los asentamientos mediante Estado y Municipio
+
+- **Endpoint**: `/api/v1/asentamientos/municipio/{idmcpio}/estado/{idEdo}`
+- **Descripcion**: Obtiene mediante GET los municipios en la BD filtrando por estado
+- **Ejemplo**: `/api/v1/asentamientos/municipio/796/estado/16`
+- **Respuesta**:
+  *(Respuesta reducida por exceso de datos)*
+
+### Obtener los asentamientos mediante CP
+
+- **Endpoint**: `/api/v1/asentamientos/codigopostal/{id}`
+- **Descripcion**: Obtiene mediante GET los municipios en la BD filtrando por estado
+- **Ejemplo**: `/api/v1/asentamientos/codigopostal/58000`
+- **Respuesta**:
+  *(Respuesta reducida por exceso de datos)*

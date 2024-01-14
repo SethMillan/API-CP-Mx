@@ -181,7 +181,7 @@ public class Controller {
                                 .codigoPostal(codigopostal.getCp())
                                 .build())
                         .collect(Collectors.toList());
-                return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Numero de CP encontrados : " + codigoDto.size()).object(codigoDto).build(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Numero de CP encontrados : " + codigoDto.size()).object(codigoDto).build(), HttpStatus.OK);
             }else{
                 return new ResponseEntity<>(MensajeResponse.builder().error(true).mensaje("No se encontraron codigos postales en ese municipio").object(null).build(),HttpStatus.NOT_FOUND);
             }
