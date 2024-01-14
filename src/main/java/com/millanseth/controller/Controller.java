@@ -1,6 +1,5 @@
 package com.millanseth.controller;
 
-import com.millanseth.model.dao.CodigoPostalDAO;
 import com.millanseth.model.dto.AsentamientoDto;
 import com.millanseth.model.dto.CodigoPostalDto;
 import com.millanseth.model.dto.EstadoDto;
@@ -14,10 +13,8 @@ import com.millanseth.service.IAsentamiento;
 import com.millanseth.service.ICodigoPostal;
 import com.millanseth.service.IEstado;
 import com.millanseth.service.IMunicipio;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
