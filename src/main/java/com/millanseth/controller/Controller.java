@@ -101,7 +101,20 @@ public class Controller {
     @GetMapping("asentamientos")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> showAllAsenta(){
-        return null;
+        try {
+            List<Asentamiento> listaAsenta = asentamientoService.listAll();
+            List<AsentamientoDto> listaDto = listaAsenta.stream()
+                    .map(asentamiento -> AsentamientoDto.builder()
+                            .estado(asentamiento.getCodigoPostal().getMunicipio().getEstado().getEstado())
+                            .municipio(asentamiento.getCodigoPostal().getMunicipio().getMunicipio())
+                            .codigoPostal(asentamiento.getCodigoPostal().getCp())
+                            .asentamiento(asentamiento.getAsenta())
+                            .build()
+                    ).toList();
+            return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Codigos totales "+listaDto.size()).object(listaDto).build(),HttpStatus.OK);
+        }catch (Exception ext ){
+            return new ResponseEntity<>(MensajeResponse.builder().error(true).mensaje("Error encontrado "+ext).object(null).build(),HttpStatus.OK);
+        }
     }
 
 

@@ -137,7 +137,7 @@ La url para todos los endpoints es la siguiente `http://localhost:8080`
 #### Obtener todos los CPs
 
 - **Endpoint**: `/api/v1/codigospostales`
-- **Descripcion**: Obtiene mediante GET los municipios en la BD
+- **Descripcion**: Obtiene mediante GET los CP´s en la BD
 - **Respuesta**:
   *(Respuesta reducida por exceso de datos)*
 ```json
@@ -193,7 +193,7 @@ La url para todos los endpoints es la siguiente `http://localhost:8080`
 #### Obtener los CPs mediante Estado y Municipio
 
 - **Endpoint**: `/api/v1/codigospostales/municipio/{idMcpio}/estado/{idEstado}`
-- **Descripcion**: Obtiene mediante GET los municipios en la BD filtrando por estado
+- **Descripcion**: Obtiene mediante GET los CP´s en la BD filtrando por estado y municipio
 - **Ejemplo**: `/api/v1/codigospostales/municipio/796/estado/16`
 - **Respuesta**:
   *(Respuesta reducida por exceso de datos)*
@@ -232,23 +232,104 @@ La url para todos los endpoints es la siguiente `http://localhost:8080`
 ### Obtener todos los asentamientos
 
 - **Endpoint**: `/api/v1/asentamientos`
-- **Descripcion**: Obtiene mediante GET los municipios en la BD filtrando por estado
+- **Descripcion**: Obtiene mediante GET todos los asentamientos en la BD
 - **Respuesta**:
   *(Respuesta reducida por exceso de datos)*
-
+````json
+{
+  "error":false,
+  "mensaje":"Codigos totales 153796",
+  "object": [
+    {
+      "asentamiento":"Aguascalientes Centro",
+      "codigoPostal":20000,
+      "municipio":"Aguascalientes",
+      "estado":"Aguascalientes"
+    },
+    {
+      "asentamiento":"Colinas del Rio",
+      "codigoPostal":20010,
+      "municipio":"Aguascalientes",
+      "estado":"Aguascalientes"
+    },
+    {
+      "asentamiento":"Olivares Santana",
+      "codigoPostal":20010,
+      "municipio":"Aguascalientes",
+      "estado":"Aguascalientes"},
+    {
+      "asentamiento":"Las Brisas",
+      "codigoPostal":20010,
+      "municipio":"Aguascalientes",
+      "estado":"Aguascalientes"
+    }
+  ]
+}
+````
 
 ### Obtener los asentamientos mediante Estado y Municipio
 
 - **Endpoint**: `/api/v1/asentamientos/municipio/{idmcpio}/estado/{idEdo}`
-- **Descripcion**: Obtiene mediante GET los municipios en la BD filtrando por estado
+- **Descripcion**: Obtiene mediante GET los asentamientos en la BD filtrando por estado y municipio
 - **Ejemplo**: `/api/v1/asentamientos/municipio/796/estado/16`
 - **Respuesta**:
   *(Respuesta reducida por exceso de datos)*
-
+````json
+{
+  "error": false,
+  "mensaje": "Asentamientos encontrados: 1034",
+  "object": [
+    {
+      "asentamiento": "INFONAVIT El Pípila",
+      "codigoPostal": 58000,
+      "municipio": "Morelia",
+      "estado": "Michoacan_de_Ocampo"
+    },
+    {
+      "asentamiento": "Centro Histórico",
+      "codigoPostal": 58000,
+      "municipio": "Morelia",
+      "estado": "Michoacan_de_Ocampo"
+    },
+    {
+      "asentamiento": "INFONAVIT Plan de Ayala",
+      "codigoPostal": 58000,
+      "municipio": "Morelia",
+      "estado": "Michoacan_de_Ocampo"
+    }
+  ]
+}
+````
 ### Obtener los asentamientos mediante CP
 
 - **Endpoint**: `/api/v1/asentamientos/codigopostal/{id}`
-- **Descripcion**: Obtiene mediante GET los municipios en la BD filtrando por estado
+- **Descripcion**: Obtiene mediante GET los asentamientos en la BD filtrando por CP
 - **Ejemplo**: `/api/v1/asentamientos/codigopostal/58000`
 - **Respuesta**:
   *(Respuesta reducida por exceso de datos)*
+````json
+{
+  "error": false,
+  "mensaje": "Asentamientos encontrados: 3",
+  "object": [
+    {
+      "asentamiento": "INFONAVIT El Pípila",
+      "codigoPostal": 58000,
+      "municipio": "Morelia",
+      "estado": "Michoacan_de_Ocampo"
+    },
+    {
+      "asentamiento": "Centro Histórico",
+      "codigoPostal": 58000,
+      "municipio": "Morelia",
+      "estado": "Michoacan_de_Ocampo"
+    },
+    {
+      "asentamiento": "INFONAVIT Plan de Ayala",
+      "codigoPostal": 58000,
+      "municipio": "Morelia",
+      "estado": "Michoacan_de_Ocampo"
+    }
+  ]
+}
+````
