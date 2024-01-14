@@ -17,6 +17,7 @@ import com.millanseth.service.IMunicipio;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -191,7 +192,6 @@ public class Controller {
         }
     }
 
-
     @GetMapping("asentamientos/codigopostal/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> showFilterAsenta(@PathVariable Integer id){
@@ -215,7 +215,27 @@ public class Controller {
                     HttpStatus.METHOD_NOT_ALLOWED);
         }
     }
-
+    @GetMapping("asentamientos/municipio/{idmcpio}/estado/{idEdo}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?>showCPFilteredByEdoAndMcpio(@PathVariable Integer idmcpio, @PathVariable Integer idEdo){
+        try{
+            List<Asentamiento> asentamientosLista =asentamientoService.findCPByMcpioAndEdo(idmcpio,idEdo);
+            if(asentamientosLista!=null){
+                List<AsentamientoDto> asentaDto = asentamientosLista.stream().map(asentamiento -> AsentamientoDto
+                        .builder()
+                        .estado(asentamiento.getCodigoPostal().getMunicipio().getEstado().getEstado())
+                        .municipio(asentamiento.getCodigoPostal().getMunicipio().getMunicipio())
+                        .codigoPostal(asentamiento.getCodigoPostal().getCp())
+                        .asentamiento(asentamiento.getAsenta())
+                        .build()).toList();
+                return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("Asentamientos encontrados: "+asentaDto.size()).object(asentaDto).build(), HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("No se encontraron Asentamientos").object(null).build(),HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception exDT){
+            return new ResponseEntity<>(MensajeResponse.builder().error(false).mensaje("No se encontraron asentamientos").object(null).build(),HttpStatus.NOT_FOUND);
+        }
+    }
 
 
     //METODOS XTRA QUE NO PIDIERON JIJI
