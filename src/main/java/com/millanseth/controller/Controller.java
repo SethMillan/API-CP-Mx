@@ -155,7 +155,7 @@ public class Controller {
                             MensajeResponse.builder()
                                     .error(false)
                                     .mensaje("Municipios encontrados : "+tamaño)
-                                    .object(listMunicipios)
+                                    .object(municipiosDTO)
                                     .build()
                             ,HttpStatus.OK);
                 }
